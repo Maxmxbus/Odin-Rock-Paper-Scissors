@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body{
+            background: rgb(13, 8, 255);
+        }
+        .rps{
+            display: flex;
+            gap: 120px;
+            justify-content:space-evenly;
+            margin-top: 360px;
+        }
+        .so{
+            display: flex;
+            gap: 120px;
+            justify-content:space-evenly;
+            margin-top: 50px;
+        }
+        button{
+            width: 200px;
+            height: 100px;
+        }
+        .socre{
+            background: transparent;
+            width: auto;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Papper Scissors</title>
+    
+    
+</head>
+<body>
+    <div class="rps">
+    
+    </div>
+
+    <div class="so">
+        <div class="socre">
+            <h1 class="messy"></h1>
+        </div>
+    </div>
+    <script>
+        const rps = document.querySelector(".rps");
+const h1 = document.querySelector(".messy");
+
+const rpsRock = document.createElement("button");
+rpsRock.className = "rock";
+rpsRock.textContent = "Rock";
+
+const rpsPaper = document.createElement("button");
+rpsPaper.className = "paper";
+rpsPaper.textContent = "Paper";
+
+const rpsScissors = document.createElement("button");
+rpsScissors.className = "scissors";
+rpsScissors.textContent = "Scissors";
+
+rps.appendChild(rpsRock);
+rps.appendChild(rpsPaper);
+rps.appendChild(rpsScissors);
+
+let playerScore = 0;
+let computerScore = 0;
+let roundsPlayed = 0;
+
+// Function to get a random computer choice
+function getComputerChoice() {
+  const randomNumber = Math.random();
+  if (randomNumber < 0.33) {
+    return "rock";
+  } else if (randomNumber < 0.66) {
+    return "paper";
+  } else {
+    return "scissors";
+  }
+}
+
+// Function to play a single round
+function playRound(humanChoice, computerChoice) {
+  humanChoice = humanChoice.toLowerCase();
+  if (humanChoice === computerChoice) {
+    return "It's a tie!";
+  } else if (
+    (humanChoice === "rock" && computerChoice === "scissors") ||
+    (humanChoice === "paper" && computerChoice === "rock") ||
+    (humanChoice === "scissors" && computerChoice === "paper")
+  ) {
+    playerScore++;
+    return `You win! ${humanChoice} beats ${computerChoice}.`;
+  } else {
+    computerScore++;
+    return `You lose! ${computerChoice} beats ${humanChoice}.`;
+  }
+}
+
+// Event listeners for the buttons
+rpsRock.addEventListener("click", () => {
+  const humanSelection = "rock";
+  const computerSelection = getComputerChoice();
+  const roundResult = playRound(humanSelection, computerSelection);
+  console.log(roundResult);
+  updateScore(roundResult);
+});
+
+rpsPaper.addEventListener("click", () => {
+  const humanSelection = "paper";
+  const computerSelection = getComputerChoice();
+  const roundResult = playRound(humanSelection, computerSelection);
+  console.log(roundResult);
+  updateScore(roundResult);
+});
+
+rpsScissors.addEventListener("click", () => {
+  const humanSelection = "scissors";
+  const computerSelection = getComputerChoice();
+  const roundResult = playRound(humanSelection, computerSelection);
+  console.log(roundResult);
+  updateScore(roundResult);
+});
+
+// Function to update the score
+function updateScore(roundResult) {
+  roundsPlayed++;
+  if (roundResult.includes("You win")) {
+    h1.textContent = `Round ${roundsPlayed}: You won this round! Your score: ${playerScore} | Computer score: ${computerScore}`;
+  } else if (roundResult.includes("You lose")) {
+    h1.textContent = `Round ${roundsPlayed}: You lost this round! Your score: ${playerScore} | Computer score: ${computerScore}`;
+  } else {
+    h1.textContent = `Round ${roundsPlayed}: It's a tie! Your score: ${playerScore} | Computer score: ${computerScore}`;
+  }
+
+  if (roundsPlayed === 5) {
+    if (playerScore > computerScore) {
+      h1.textContent += "\nYou win the game!";
+    } else if (playerScore < computerScore) {
+      h1.textContent += "\nYou lose the game!";
+    } else {
+      h1.textContent += "\nIt's a tie!";
+    }
+    // Disable buttons after 5 rounds
+    rpsRock.disabled = true;
+    rpsPaper.disabled = true;
+    rpsScissors.disabled = true;
+  }
+}
+
+    </script>
+</body>
+</html>
